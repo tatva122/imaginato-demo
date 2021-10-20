@@ -1,0 +1,46 @@
+import { Model, DataTypes, Sequelize } from 'sequelize';
+import { sequelize } from './index';
+
+export class Comment extends Model {
+  public id!: number;
+
+  public nickName!: string;
+
+  public title!: string;
+
+  public content!: string;
+
+  // timestamps!
+  public readonly createdAt!: Date;
+}
+
+Comment.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER.UNSIGNED
+    },
+    nickName: {
+      type: DataTypes.STRING
+    },
+    content: {
+      type: DataTypes.STRING
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.fn('now')
+    },
+    article_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
+    }
+  },
+  {
+    sequelize,
+    tableName: 'Comment',
+    timestamps: false
+  }
+);
