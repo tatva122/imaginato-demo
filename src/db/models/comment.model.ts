@@ -33,14 +33,19 @@ Comment.init(
       type: DataTypes.DATE,
       defaultValue: Sequelize.fn('now')
     },
-    article_id: {
+    articleId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
+    },
+    parentCommentId: {
+      field: 'commentId',
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     }
   },
   {
     sequelize,
-    tableName: 'Comment',
+    tableName: 'comment',
     timestamps: false
   }
 );

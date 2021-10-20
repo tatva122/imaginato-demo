@@ -1,14 +1,11 @@
 import { NextFunction, Response, Router } from 'express';
+import { body, validationResult } from 'express-validator';
 import articleService from '../../services/article.service';
 
 const getArticle = async (req: any, res: Response, next: NextFunction) => {
   try {
-    const start = req.headers.startTime || Date.now();
-    const { user } = req;
-    const uploadResumeURL = await articleService.getArticle(user);
-    const end = Date.now();
-    res.setHeader('X-Response-Time', end - +start);
-    return res.status(200).json({ ResumeCertificationsURL: uploadResumeURL });
+    const article = await articleService.getArticle(req.params.articleId);
+    return res.status(200).json(article);
   } catch (error) {
     return next(error);
   }
@@ -18,7 +15,7 @@ const getArticles = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { query } = req;
     const articles = await articleService.getArticles(query);
-    return res.status(200).json({ articles });
+    return res.status(200).json(articles);
   } catch (error) {
     return next(error);
   }
@@ -26,8 +23,7 @@ const getArticles = async (req: any, res: Response, next: NextFunction) => {
 
 const createArticle = async (req: any, res: Response, next: NextFunction) => {
   try {
-    const { body } = req;
-    const created = await articleService.createArticle(body);
+    const created = await articleService.createArticle(req.body);
     return res.status(200).json(created);
   } catch (error) {
     return next(error);
@@ -35,7 +31,7 @@ const createArticle = async (req: any, res: Response, next: NextFunction) => {
 };
 
 export default (app: Router) => {
-  app.post('/article', createArticle);
-  app.get('/article', getArticle);
+  app.post('/article', body('nickName').isString(), body('title').isString(), body('content').isString(), createArticle);
+  app.get('/article/:articleId', getArticle);
   app.get('/articles', getArticles);
 };

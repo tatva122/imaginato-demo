@@ -47,6 +47,6 @@ Article.init(
 
 Article.hasMany(Comment, {
   sourceKey: 'id',
-  foreignKey: 'article_id',
+  foreignKey: 'articleId',
   as: 'comment'
 });

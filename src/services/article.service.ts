@@ -51,8 +51,12 @@ const createArticle = (article: IArticle) => {
     });
 };
 
-const getArticle = (article: IArticle) => {
-  return true;
+const getArticle = (articleId: number) => {
+  return db.Article.findByPk(articleId)
+    .then(articles => articles)
+    .catch((error: Error) => {
+      throw error;
+    });
 };
 
 export default {
